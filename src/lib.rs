@@ -24,11 +24,6 @@ pub fn push_exclamation(s: &mut String) {
 }
 
 // ---------- 3. STRUCTS, ENUMS, METHODS ----------
-// #[derive(...)] generiert automatisch Code für Traits:
-// - Debug: Ermöglicht {:?} Formatierung
-// - Clone: Erlaubt .clone() (Deep Copy)
-// - Copy: Erlaubt implizites Kopieren (Bit-für-Bit, nur bei einfachen Typen möglich)
-// - PartialEq: Ermöglicht == Vergleiche
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Point {
     pub x: f64,
@@ -50,7 +45,6 @@ impl Point {
 use std::fmt;
 impl fmt::Display for Point {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // Wir formatieren den Punkt als "(x, y)"
         write!(f, "({}, {})", self.x, self.y)
     }
 }
