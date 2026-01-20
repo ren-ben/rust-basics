@@ -1,13 +1,11 @@
-// ---------- 1. BASICS ----------
 pub fn greet(name: &str) -> String {
-    // TODO: return "Hello, <name>!"
-    todo!()
+    format!("Hello, {}!", name)
 }
+
 pub fn sum(nums: &[i32]) -> i32 {
-    // TODO: sum all elements using an iterator
-    todo!()
+    nums.iter().sum()
 }
+
 pub fn flip(b: bool) -> bool {
-    // TODO: return the opposite boolean
-    todo!()
+    !b
 }
