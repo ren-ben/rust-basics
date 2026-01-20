@@ -24,6 +24,11 @@ pub fn push_exclamation(s: &mut String) {
 }
 
 // ---------- 3. STRUCTS, ENUMS, METHODS ----------
+// #[derive(...)] generiert automatisch Code für Traits:
+// - Debug: Ermöglicht {:?} Formatierung
+// - Clone: Erlaubt .clone() (Deep Copy)
+// - Copy: Erlaubt implizites Kopieren (Bit-für-Bit, nur bei einfachen Typen möglich)
+// - PartialEq: Ermöglicht == Vergleiche
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Point {
     pub x: f64,
@@ -42,17 +47,29 @@ impl Point {
     }
 }
 
+use std::fmt;
+impl fmt::Display for Point {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // Wir formatieren den Punkt als "(x, y)"
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Shape {
     Circle { center: Point, radius: f64 },
     Rect { top_left: Point, w: f64, h: f64 },
+    Triangle { a: Point, b: Point, c: Point },
 }
 
 impl Shape {
     pub fn area(&self) -> f64 {
         match self {
-            Shape::Circle { center: _, radius } => std::f64::consts::PI * radius * radius,
-            Shape::Rect { top_left: _, w, h } => w * h,
+            Shape::Circle { radius, .. } => std::f64::consts::PI * radius * radius,
+            Shape::Rect { w, h, .. } => w * h,
+            Shape::Triangle { a, b, c } => {
+                0.5 * ((a.x - c.x) * (b.y - a.y) - (a.x - b.x) * (c.y - a.y)).abs()
+            }
         }
     }
 }
@@ -95,6 +112,28 @@ pub fn furthest_from_origin<T: Plottable>(items: &[T]) -> Option<&T> {
     }
 
     best
+}
+
+pub fn min_by_key<T, K, F>(items: &[T], f: F) -> Option<&T>
+where
+    K: Ord,
+    F: Fn(&T) -> K,
+{
+    if items.is_empty() {
+        return None;
+    }
+
+    let mut min_item = &items[0];
+    let mut min_val = f(min_item);
+
+    for item in &items[1..] {
+        let val = f(item);
+        if val < min_val {
+            min_val = val;
+            min_item = item;
+        }
+    }
+    Some(min_item)
 }
 
 // ---------- 5. ERRORS & OPTION/RESULT ----------

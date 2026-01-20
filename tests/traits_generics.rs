@@ -14,3 +14,17 @@ fn furthest_generic() {
     let res2 = furthest_from_origin(&tuples).unwrap();
     assert_eq!(*res2, (3.0, 4.0));
 }
+
+#[test]
+fn min_by_key_test() {
+    let nums = [10, 50, 2, 8, 3];
+    let min = min_by_key(&nums, |x| *x);
+    assert_eq!(min, Some(&2));
+
+    let strings = ["apple", "banana", "pear", "kiwi"];
+    let shortest = min_by_key(&strings, |s| s.len());
+    assert_eq!(shortest, Some(&"pear"));
+
+    let empty: &[i32] = &[];
+    assert_eq!(min_by_key(empty, |x| *x), None);
+}
