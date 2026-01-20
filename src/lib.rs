@@ -56,3 +56,43 @@ impl Shape {
         }
     }
 }
+
+// ---------- 4. TRAITS & GENERICS ----------
+pub trait Plottable {
+    fn x(&self) -> f64;
+    fn y(&self) -> f64;
+}
+
+impl Plottable for Point {
+    fn x(&self) -> f64 {
+        self.x
+    }
+    fn y(&self) -> f64 {
+        self.y
+    }
+}
+
+impl Plottable for (f64, f64) {
+    fn x(&self) -> f64 {
+        self.0
+    }
+    fn y(&self) -> f64 {
+        self.1
+    }
+}
+
+// Return a reference to the item farthest from the origin.
+pub fn furthest_from_origin<T: Plottable>(items: &[T]) -> Option<&T> {
+    let mut best: Option<&T> = None;
+    let mut best_d2 = -1.0_f64;
+
+    for item in items {
+        let d2 = item.x() * item.x() + item.y() * item.y();
+        if d2 > best_d2 {
+            best_d2 = d2;
+            best = Some(item);
+        }
+    }
+
+    best
+}
