@@ -96,3 +96,19 @@ pub fn furthest_from_origin<T: Plottable>(items: &[T]) -> Option<&T> {
 
     best
 }
+
+// ---------- 5. ERRORS & OPTION/RESULT ----------
+pub fn parse_port(s: &str) -> Result<u16, String> {
+    s.parse::<u16>().map_err(|e| format!("Invalid port: {e}"))
+}
+
+// ---------- 6. ITERATORS & CLOSURES ----------
+pub fn even_squares(n: u32) -> Vec<u32> {
+    (0..=n).filter(|x| x % 2 == 0).map(|x| x * x).collect()
+}
+
+// ---------- 7. USING A CRATE (rand) ----------
+pub fn roll_dice(sides: u8) -> u8 {
+    use rand::Rng;
+    rand::rng().random_range(1..=sides)
+}
